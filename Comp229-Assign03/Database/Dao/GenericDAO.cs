@@ -117,8 +117,8 @@ namespace Comp229_Assign03.Database.Dao
         /// </summary>
         /// <param name="modelObject">The object to be inserted, deleted or updated.</param>
         /// <param name="exceptionMessage">The message to be thrown by the exception.</param>
-        /// <param name="BuildNonQueryMethod">The method that will be invoked to build the non query command</param>
-        protected void ExecuteNonQueryCommand(TModel modelObject, string exceptionMessage, BuildNonQueryCommand BuildNonQueryMethod)
+        /// <param name="BuildNonQueryCommandMethod">The method that will be invoked to build the non query command</param>
+        protected void ExecuteNonQueryCommand(TModel modelObject, string exceptionMessage, BuildNonQueryCommand BuildNonQueryCommandMethod)
         {
             try
             {
@@ -126,7 +126,7 @@ namespace Comp229_Assign03.Database.Dao
                 using (SqlConnection cnn = new SqlConnection(connectionString))
                 {
                     // Disposes automatically the command when exiting the using statement.
-                    using (SqlCommand cmd = BuildNonQueryMethod(cnn, modelObject))
+                    using (SqlCommand cmd = BuildNonQueryCommandMethod(cnn, modelObject))
                     {
                         cnn.Open();
                         cmd.ExecuteNonQuery();
