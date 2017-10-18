@@ -1,8 +1,6 @@
 ﻿using Comp229_Assign03.Database.Exception;
 using Comp229_Assign03.Database.Model;
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 
 namespace Comp229_Assign03.Database.Dao
