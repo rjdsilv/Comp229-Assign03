@@ -177,6 +177,9 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Database\Dao\CourseDAO.cs" />
+    <Compile Include="Database\Dao\GenericDAO.cs" />
+    <Compile Include="Database\Dao\IGenericDAO.cs" />
     <Compile Include="Database\Exception\DatabaseException.cs" />
     <Compile Include="Database\Model\Course.cs" />
     <Compile Include="Database\Model\Department.cs" />
@@ -218,7 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Database\Dao\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

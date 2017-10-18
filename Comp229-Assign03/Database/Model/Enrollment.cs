@@ -3,27 +3,38 @@
     /// <summary>
     /// <b>Class</b>      : Enrollment
     /// <b>Description</b>: Model class to hold Enrollment data from the database.
+    /// <b>Author</b>     : Rodrigo Januario da Silva
     /// <b>Version</b>    : 1.0.0
     /// </summary>
     public class Enrollment : GenericModel
     {
-        public Course course { get; set; }
-        public Student student { get; set; }
-        public int grade { get; set; }
+        public Course Course { get; set; }
+        public Student Student { get; set; }
+        public int Grade { get; set; }
+
+        /// <summary>
+        /// Creates a new unknown instance of the Enrollment class.
+        /// </summary>
+        internal Enrollment() : base()
+        {
+            Course = new Course();
+            Student = new Student();
+            Grade = 0;
+        }
 
         /// <summary>
         /// Creates a new instance of Enrollment class.
         /// </summary>
-        /// <param name="enrollmentID"></param> - The enrollment's identification.
-        /// <param name="course"></param> - The enrollment's course.
-        /// <param name="student"></param> - The enrollment's student.
-        /// <param name="grade"></param> - The enrollment's grade.
+        /// <param name="enrollmentID">The enrollment's identification.</param>
+        /// <param name="course">The enrollment's course.</param>
+        /// <param name="student">The enrollment's student.</param>
+        /// <param name="grade">The enrollment's grade.</param>
         public Enrollment(int enrollmentID, Course course, Student student, int grade)
         {
-            id = enrollmentID;
-            this.course = course;
-            this.student = student;
-            this.grade = grade;
+            Id = enrollmentID;
+            this.Course = course;
+            this.Student = student;
+            this.Grade = grade;
         }
     }
 }
