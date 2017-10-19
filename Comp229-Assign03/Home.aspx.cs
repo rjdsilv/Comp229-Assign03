@@ -2,10 +2,7 @@
 using Comp229_Assign03.Database.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Comp229_Assign03
 {
@@ -15,17 +12,15 @@ namespace Comp229_Assign03
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Title = "Home Page";
+
             if (!IsPostBack)
             {
+                // Loads the all the students from the database.
                 List<Student> allStudents = studentDAO.FindAll();
                 studentsRepeater.DataSource = allStudents;
                 studentsRepeater.DataBind();
             }
-        }
-
-        protected void SelectStudent(string rowId)
-        {
-            System.Diagnostics.Debug.WriteLine("Row Clicked: " + rowId);
         }
     }
 }
