@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System;
 using Comp229_Assign03.Database.Exception;
+using Comp229_Assign03.Patterns;
 
 namespace Comp229_Assign03.Database.Dao
 {
@@ -14,10 +15,14 @@ namespace Comp229_Assign03.Database.Dao
     /// <b>Version</b>    : 1.0.0
     /// </summary>
     /// <typeparam name="TModel">The model class to be used.</typeparam>
-    public abstract class GenericDAO<TModel> : IGenericDAO<TModel> where TModel : GenericModel
+    /// <typeparam name="TSingleton">The singleton specification.</typeparam>
+    public abstract class GenericDAO<TModel, TSingleton> : Singleton<TSingleton>, IGenericDAO<TModel> where TModel : GenericModel
     {
         // Constant declaration.
         protected const string ID_PARAM = "@Id";
+
+        // Attributes declaration.
+        protected string modelName = "";
 
         // The connection string defined in Web.config.
         protected string connectionString = ConfigurationManager.ConnectionStrings["Assignment03CnnStr"].ConnectionString;
@@ -28,27 +33,102 @@ namespace Comp229_Assign03.Database.Dao
         ///
         /// <see cref="IGenericDAO{TModel}" />
         ///
-        public abstract List<TModel> FindAll();
+        public List<TModel> FindAll()
+        {
+            List<TModel> allObjects = new List<TModel>();
+
+            try
+            {
+                // Disposes and closes automatically the connection when exiting the using statement.
+                using (SqlConnection cnn = new SqlConnection(connectionString))
+                {
+                    // Disposes automatically the command when exiting the using statement.
+                    using (SqlCommand cmd = BuildFindAllCommand(cnn))
+                    {
+                        cnn.Open();
+
+                        // Disposes and closes automatically the data reader when exiting the using statement.
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    allObjects.Add(BuildObjectFromReader(reader));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw new DatabaseException(string.Format("An error has occurred when getting all the {0]}s from the database!", modelName), ex);
+            }
+
+            return allObjects;
+
+        }
 
         ///
         /// <see cref="IGenericDAO{TModel}" />
         ///
-        public abstract TModel FindById(int id);
+        public TModel FindById(int id)
+        {
+            TModel course = BuildUknownModelObject();
+
+            try
+            {
+                // Disposes and closes automatically the connection when exiting the using statement.
+                using (SqlConnection cnn = new SqlConnection(connectionString))
+                {
+                    // Disposes automatically the command when exiting the using statement.
+                    using (SqlCommand cmd = BuildFindByIdCommand(cnn, id))
+                    {
+                        cnn.Open();
+
+                        // Disposes and closes automatically the data reader when exiting the using statement.
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows && reader.Read())
+                            {
+                                course = BuildObjectFromReader(reader);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw new DatabaseException(string.Format("An error has occurred when getting the {0} with Id = {1} from the database!", modelName, id), ex);
+            }
+
+            return course;
+        }
 
         ///
         /// <see cref="IGenericDAO{TModel}" />
         ///
-        public abstract void Delete(TModel modelObject);
+        public void Delete(TModel modelObject)
+        {
+            ExecuteNonQueryCommand(modelObject, string.Format("An error has occurred when deleting the {0} {1} from the database!", modelName, modelObject), BuildDeleteCommand);
+        }
 
         ///
         /// <see cref="IGenericDAO{TModel}" />
         ///
-        public abstract void Insert(TModel modelObject);
+        public void Insert(TModel modelObject)
+        {
+            ExecuteNonQueryCommand(modelObject, string.Format("An error has occurred when inserting the {0} {1} in the database!", modelName, modelObject), BuildInsertCommand);
+        }
 
         ///
         /// <see cref="IGenericDAO{TModel}" />
         ///
-        public abstract void Update(TModel modelObject);
+        public void Update(TModel modelObject)
+        {
+            ExecuteNonQueryCommand(modelObject, string.Format("An error has occurred when updating the {0} {1} in the database!", modelName, modelObject), BuildUpdateCommand);
+        }
 
         /// <summary>
         /// Builds a specific delete command for the model object passed as parameter.
@@ -95,6 +175,19 @@ namespace Comp229_Assign03.Database.Dao
         protected abstract SqlCommand BuildUpdateCommand(SqlConnection cnn, TModel modelObject);
 
         /// <summary>
+        /// Builds an model object from a given reader with recorsds returned from the database.
+        /// </summary>
+        /// <param name="reader">The reader to be used in order to create the model object</param>
+        /// <returns>The object just created</returns>
+        protected abstract TModel BuildObjectFromReader(SqlDataReader reader);
+
+        /// <summary>
+        /// Builds an unknown (empty) model object.
+        /// </summary>
+        /// <returns>The empty model object created.</returns>
+        protected abstract TModel BuildUknownModelObject();
+
+        /// <summary>
         /// Add a parameter to the SqlCommand given. This method will treat null values.
         /// </summary>
         /// <param name="cmd">The command to have the parameter inserted</param>
@@ -118,7 +211,7 @@ namespace Comp229_Assign03.Database.Dao
         /// <param name="modelObject">The object to be inserted, deleted or updated.</param>
         /// <param name="exceptionMessage">The message to be thrown by the exception.</param>
         /// <param name="BuildNonQueryCommandMethod">The method that will be invoked to build the non query command</param>
-        protected void ExecuteNonQueryCommand(TModel modelObject, string exceptionMessage, BuildNonQueryCommand BuildNonQueryCommandMethod)
+        private void ExecuteNonQueryCommand(TModel modelObject, string exceptionMessage, BuildNonQueryCommand BuildNonQueryCommandMethod)
         {
             try
             {

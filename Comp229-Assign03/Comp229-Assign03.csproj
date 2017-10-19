@@ -180,6 +180,7 @@
     <Compile Include="Database\Dao\CourseDAO.cs" />
     <Compile Include="Database\Dao\GenericDAO.cs" />
     <Compile Include="Database\Dao\IGenericDAO.cs" />
+    <Compile Include="Database\Dao\StudentDAO.cs" />
     <Compile Include="Database\Exception\DatabaseException.cs" />
     <Compile Include="Database\Model\Course.cs" />
     <Compile Include="Database\Model\Department.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Patterns\Singleton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

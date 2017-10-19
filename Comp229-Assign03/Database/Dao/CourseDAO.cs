@@ -1,6 +1,4 @@
-﻿using Comp229_Assign03.Database.Exception;
-using Comp229_Assign03.Database.Model;
-using System.Collections.Generic;
+﻿using Comp229_Assign03.Database.Model;
 using System.Data.SqlClient;
 
 namespace Comp229_Assign03.Database.Dao
@@ -11,102 +9,14 @@ namespace Comp229_Assign03.Database.Dao
     /// <b>Author</b>     : Rodrigo Januario da Silva
     /// <b>Version</b>    : 1.0.0
     /// </summary>
-    public class CourseDAO : GenericDAO<Course>
+    public class CourseDAO : GenericDAO<Course, CourseDAO>
     {
-        ///
-        /// <see cref="GenericDAO{TModel}" />
-        ///
-        public override List<Course> FindAll()
+        /// <summary>
+        /// Creates a new instance of the CourseDAO class.
+        /// </summary>
+        private CourseDAO()
         {
-            List<Course> allCourses = new List<Course>();
-
-            try
-            {
-                // Disposes and closes automatically the connection when exiting the using statement.
-                using (SqlConnection cnn = new SqlConnection(connectionString))
-                {
-                    // Disposes automatically the command when exiting the using statement.
-                    using (SqlCommand cmd = BuildFindAllCommand(cnn))
-                    {
-                        cnn.Open();
-
-                        // Disposes and closes automatically the data reader when exiting the using statement.
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while(reader.NextResult())
-                            {
-                                allCourses.Add(BuildCourseFromReader(reader));
-                            }
-                        }
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                throw new DatabaseException("An error has occurred when getting all the Courses from the database!", ex);
-            }
-
-            return allCourses;
-        }
-
-        ///
-        /// <see cref="GenericDAO{TModel}" />
-        ///
-        public override Course FindById(int id)
-        {
-            Course course = new Course();
-
-            try
-            {
-                // Disposes and closes automatically the connection when exiting the using statement.
-                using (SqlConnection cnn = new SqlConnection(connectionString))
-                {
-                    // Disposes automatically the command when exiting the using statement.
-                    using (SqlCommand cmd = BuildFindByIdCommand(cnn, id))
-                    {
-                        cnn.Open();
-
-                        // Disposes and closes automatically the data reader when exiting the using statement.
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.NextResult())
-                            {
-                                course = BuildCourseFromReader(reader);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                throw new DatabaseException("An error has occurred when getting the Course with Id = " + id + " from the database!", ex);
-            }
-
-            return course;
-        }
-
-        ///
-        /// <see cref="GenericDAO{TModel}" />
-        ///
-        public override void Delete(Course modelObject)
-        {
-            ExecuteNonQueryCommand(modelObject, "An error has occurred when deleting the Course " + modelObject + " from the database!", BuildDeleteCommand);
-        }
-
-        ///
-        /// <see cref="GenericDAO{TModel}" />
-        ///
-        public override void Insert(Course modelObject)
-        {
-            ExecuteNonQueryCommand(modelObject, "An error has occurred when inserting the Course " + modelObject + " in the database!", BuildInsertCommand);
-        }
-
-        ///
-        /// <see cref="GenericDAO{TModel}" />
-        ///
-        public override void Update(Course modelObject)
-        {
-            ExecuteNonQueryCommand(modelObject, "An error has occurred when updating the Course " + modelObject + " in the database!", BuildUpdateCommand);
+            modelName = "Course";
         }
 
         ///
@@ -191,12 +101,10 @@ namespace Comp229_Assign03.Database.Dao
             return cmd;
         }
 
-        /// <summary>
-        /// Builds a course from a given reader with recorsds returned from the database.
-        /// </summary>
-        /// <param name="reader">The reader to be used in order to create the course</param>
-        /// <returns>The course just created</returns>
-        private Course BuildCourseFromReader(SqlDataReader reader)
+        ///
+        /// <see cref="IGenericDAO{TModel}" />
+        ///
+        protected override Course BuildObjectFromReader(SqlDataReader reader)
         {
             return new Course(
                 reader.GetInt32(reader.GetOrdinal("CourseID")),         // The course's id
@@ -208,6 +116,14 @@ namespace Comp229_Assign03.Database.Dao
                     reader.GetFloat(reader.GetOrdinal("Budget"))        // The department's budget.
                 )
             );
+        }
+
+        ///
+        /// <see cref="GenericDAO{TModel}" />
+        ///
+        protected override Course BuildUknownModelObject()
+        {
+            return new Course();
         }
     }
 }
