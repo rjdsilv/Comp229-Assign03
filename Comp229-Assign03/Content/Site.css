@@ -27,13 +27,67 @@ a {
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
-    .jumbotron {
-        margin-top: 20px;
-    }
-
     .body-content {
         padding: 0;
     }
+}
+
+.hero-image {
+    background-image: url("../Images/HeroImage.png");
+    width: 100%;
+    height: 250px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #ccc;
+}
+
+.black-transparency {
+    /* https://pixabay.com */
+    background-color: rgba(0, 0, 0, 0.35);
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+}
+
+.black-transparency h1 {
+    letter-spacing: 4px;
+    font-size: 50px;
+}
+
+.black-transparency p {
+    font-size: 25px;
+}
+
+.black-transparency span {
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+    color: #000;
+}
+
+.navbar-inverse {
+    background-color: rgb(0, 0, 75);
+    box-shadow: 0 10px 10px;
+}
+
+.navbar-inverse .navbar-brand,
+.navbar-inverse .navbar-nav > li > a {
+    color: #ddd;
+}
+
+.brand-logo > a {
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 17px;
+    padding: 5px;
+    margin: 8px;
+}
+
+.brand-logo > a:hover {
+    border: 2px solid white;
 }
 
 /* Defining the student table colors. */
@@ -59,6 +113,6 @@ a {
 .table-row:hover,
 .table-row-alternate:hover {
     cursor: pointer;
-    background-color: rgb(120, 120, 200);
+    background-color: rgb(10, 131, 166);
     color: #fff;
 }
