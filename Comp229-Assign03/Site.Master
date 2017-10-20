@@ -74,11 +74,13 @@
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
-            <hr />
-            <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
-            </footer>
         </div>
+
+        <footer>
+            <div class="container">
+                <p>&copy; <%: DateTime.Now.Year %> - College.Me - Developed by Rodrigo Januario da Silva</p>
+            </div>
+        </footer>
 
     </form>
 </body>

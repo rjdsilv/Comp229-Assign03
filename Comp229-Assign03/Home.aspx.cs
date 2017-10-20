@@ -10,17 +10,46 @@ namespace Comp229_Assign03
     {
         private StudentDAO studentDAO = StudentDAO.GetInstance();
 
+        // Runs when the page is loading.
         protected void Page_Load(object sender, EventArgs e)
         {
             Page.Title = "Home Page";
 
             if (!IsPostBack)
             {
-                // Loads the all the students from the database.
-                List<Student> allStudents = studentDAO.FindAll();
-                studentsRepeater.DataSource = allStudents;
-                studentsRepeater.DataBind();
+                GetAllStudentsAndBindToRepeater();
             }
+        }
+
+        protected void StudentSaveButton_Click(object sender, EventArgs e)
+        {
+            studentDAO.Insert(new Student(0, StudentLastNameTextBox.Text, StudentFirstMidNameTextBox.Text, DateTime.Now));
+            GetAllStudentsAndBindToRepeater();
+            Response.Write(BuildSucessMessage());
+
+        }
+
+        /// <summary>
+        /// Gets all the students from the database and bind it into the Repeater.
+        /// </summary>
+        private void GetAllStudentsAndBindToRepeater()
+        {
+            List<Student> allStudents = studentDAO.FindAll();
+            StudentsRepeater.DataSource = allStudents;
+            StudentsRepeater.DataBind();
+        }
+
+        private void ClearTextBoxes()
+        {
+            StudentLastNameTextBox.Text = "";
+            StudentFirstMidNameTextBox.Text = "";
+        }
+
+        private string BuildSucessMessage()
+        {
+            string message = string.Format("<script type='text/javascript'>alert('Student {0}, {1} successfully saved on the database!');</script>", StudentLastNameTextBox.Text, StudentFirstMidNameTextBox.Text);
+            ClearTextBoxes();
+            return message;
         }
     }
 }

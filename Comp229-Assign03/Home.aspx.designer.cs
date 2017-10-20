@@ -13,12 +13,66 @@ namespace Comp229_Assign03 {
     public partial class _Default {
         
         /// <summary>
-        /// studentsRepeater control.
+        /// StudentsInclusionPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater studentsRepeater;
+        protected global::System.Web.UI.WebControls.Panel StudentsInclusionPanel;
+        
+        /// <summary>
+        /// StudentFirstMidNameTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox StudentFirstMidNameTextBox;
+        
+        /// <summary>
+        /// StudentLastNameTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox StudentLastNameTextBox;
+        
+        /// <summary>
+        /// StudentSaveButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button StudentSaveButton;
+        
+        /// <summary>
+        /// StudentFirstMidNameTextBox_RequiredFieldValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator StudentFirstMidNameTextBox_RequiredFieldValidator;
+        
+        /// <summary>
+        /// StudentLastNameTextBox_RequiredFieldValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator StudentLastNameTextBox_RequiredFieldValidator;
+        
+        /// <summary>
+        /// StudentsRepeater control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater StudentsRepeater;
     }
 }

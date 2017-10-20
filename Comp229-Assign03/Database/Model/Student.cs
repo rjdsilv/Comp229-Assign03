@@ -10,9 +10,29 @@ namespace Comp229_Assign03.Database.Model
     /// </summary>
     public class Student : GenericModel
     {
+        private DateTime enrollmentDate;
+
         public string LastName { get; set; }
         public string FirstMidName { get; set; }
-        public DateTime EnrollmentDate { get; set; }
+        public DateTime EnrollmentDateTime
+        {
+            get
+            {
+                return enrollmentDate;
+            }
+
+            set
+            {
+                enrollmentDate = value;
+            }
+        }
+        public string EnrollmentDate
+        {
+            get
+            {
+                return enrollmentDate.ToShortDateString();
+            }
+        }
 
         /// <summary>
         /// Creates a new unknown instance of the Student class.
@@ -21,7 +41,7 @@ namespace Comp229_Assign03.Database.Model
         {
             LastName = "UNKNOWN";
             FirstMidName = "UNKNOWN";
-            EnrollmentDate = DateTime.MinValue;
+            EnrollmentDateTime = DateTime.MinValue;
         }
 
         /// <summary>
@@ -34,9 +54,9 @@ namespace Comp229_Assign03.Database.Model
         public Student(int studentID, string lastName, string firstMidName, DateTime enrollmentDate)
         {
             Id = studentID;
-            this.LastName = lastName;
-            this.FirstMidName = firstMidName;
-            this.EnrollmentDate = enrollmentDate;
+            LastName = lastName;
+            FirstMidName = firstMidName;
+            EnrollmentDateTime = enrollmentDate;
         }
     }
 }

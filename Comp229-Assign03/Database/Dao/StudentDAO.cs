@@ -70,12 +70,10 @@ namespace Comp229_Assign03.Database.Dao
         ///
         protected override SqlCommand BuildInsertCommand(SqlConnection cnn, Student modelObject)
         {
-            string cmdText = "insert into Students(StudentID, LastName, FirstMidName, EnrollmentDate) values(" + ID_PARAM + "@LastName, @FirstMidName, @EnrollmentDate)";
+            string cmdText = "insert into Students(LastName, FirstMidName, EnrollmentDate) values(@LastName, @FirstMidName, GetDate())";
             SqlCommand cmd = new SqlCommand(cmdText, cnn);
-            AddCommandParameter(cmd, ID_PARAM, modelObject.Id);
             AddCommandParameter(cmd, "@LastName", modelObject.LastName);
             AddCommandParameter(cmd, "@FirstMidName", modelObject.FirstMidName);
-            AddCommandParameter(cmd, "@EnrollmentDate", modelObject.EnrollmentDate);
 
             return cmd;
         }
@@ -89,7 +87,7 @@ namespace Comp229_Assign03.Database.Dao
             SqlCommand cmd = new SqlCommand(cmdText, cnn);
             AddCommandParameter(cmd, "@LastName", modelObject.LastName);
             AddCommandParameter(cmd, "@FirstMidName", modelObject.FirstMidName);
-            AddCommandParameter(cmd, "@EnrollmentDate", modelObject.EnrollmentDate);
+            AddCommandParameter(cmd, "@EnrollmentDate", modelObject.EnrollmentDateTime);
             AddCommandParameter(cmd, ID_PARAM, modelObject.Id);
 
             return cmd;
