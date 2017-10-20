@@ -21,6 +21,7 @@ namespace Comp229_Assign03
             }
         }
 
+        // Saves the students to the database.
         protected void StudentSaveButton_Click(object sender, EventArgs e)
         {
             studentDAO.Insert(new Student(0, StudentLastNameTextBox.Text, StudentFirstMidNameTextBox.Text, DateTime.Now));
@@ -39,12 +40,19 @@ namespace Comp229_Assign03
             StudentsRepeater.DataBind();
         }
 
+        /// <summary>
+        /// Clears the text boxes from the students inclusion panel.
+        /// </summary>
         private void ClearTextBoxes()
         {
             StudentLastNameTextBox.Text = "";
             StudentFirstMidNameTextBox.Text = "";
         }
 
+        /// <summary>
+        /// Builds the success message for successfully included students.
+        /// </summary>
+        /// <returns>The message built</returns>
         private string BuildSucessMessage()
         {
             string message = string.Format("<script type='text/javascript'>alert('Student {0}, {1} successfully saved on the database!');</script>", StudentLastNameTextBox.Text, StudentFirstMidNameTextBox.Text);
