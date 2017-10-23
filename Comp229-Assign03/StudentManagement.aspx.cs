@@ -6,24 +6,34 @@ using System.Web.UI;
 
 namespace Comp229_Assign03
 {
-    public partial class _Default : Page
+    public partial class StudentManagement : Page
     {
         // Protect attributes to be used on the page.
         protected StudentController studentController = StudentController.GetInstance();
         protected string errorMessage = "";
 
-        // Raised when the page is loaded
+
+        // Raised when the page is loaded.
         protected void Page_Load(object sender, EventArgs e)
         {
-            Page.Title = "Home Page";
+            Page.Title = "Student Management";
 
             if (!IsPostBack)
             {
                 try
                 {
-                    studentController.GetAllStudentsAndBindToRepeater(ref StudentsRepeater);
+                    // Shows all the students as none was selected
+                    if (string.IsNullOrEmpty(Request.QueryString["student"]))
+                    {
+                        studentController.GetAllStudentsAndBindToRepeater(ref StudentsRepeater);
+                    }
+                    // Shows the selected student
+                    else
+                    {
+
+                    }
                 }
-                catch(DatabaseException ex)
+                catch (DatabaseException ex)
                 {
                     ShowErrorMessage(ex.Message);
                 }

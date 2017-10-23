@@ -1,8 +1,13 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="Comp229_Assign03._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <%-- Error Panel --%>
+    <asp:Panel ID="ErrorPanel" runat="server" CssClass="school-error-message-hidden">
+        <div><%= errorMessage %></div>
+    </asp:Panel>
+
     <%-- New Student Panel --%>
-    <asp:Panel ID="StudentsInclusionPanel" runat="server" CssClass="school-new-student-panel">
+    <asp:Panel ID="StudentsInclusionPanel" runat="server" CssClass="school-panel">
         <div class="col-sm-12 school-panel-header"><span>New Student</span></div>
         <div class="col-sm-5">
             <asp:TextBox ID="StudentFirstMidNameTextBox" TextMode="SingleLine" runat="server" CssClass="school-input" placeholder="First and Middle Names"/>
@@ -31,7 +36,7 @@
     </div>
     <asp:Repeater ID="StudentsRepeater" runat="server">
         <ItemTemplate>
-            <a href="Student.aspx?student=<%# Eval("Id") %>">
+            <a href="StudentManagement.aspx?student=<%# Eval("Id") %>">
                 <div class="row table-row">
                     <div class="col-sm-3"><span><%# Eval("Id") %></span></div>
                     <div class="col-sm-3"><span><%# Eval("FirstMidName") %></span></div>
@@ -41,7 +46,7 @@
             </a>
         </ItemTemplate>
         <AlternatingItemTemplate>
-            <a href="Student.aspx?student=<%# Eval("Id") %>">
+            <a href="StudentManagement.aspx?student=<%# Eval("Id") %>">
                 <div class="row table-row-alternate">
                     <div class="col-sm-3"><span><%# Eval("Id") %></span></div>
                     <div class="col-sm-3"><span><%# Eval("FirstMidName") %></span></div>

@@ -145,10 +145,15 @@ a {
     transform: translateY(4px);
 }
 
-.school-error-message {
+.school-error-message,
+.school-error-message-hidden {
     font-family: Calibri;
     font-size: 14px;
     color: red;
+}
+
+.school-error-message-hidden {
+    display: none;
 }
 
 .school-input {
@@ -162,7 +167,7 @@ a {
     font-size: 18px;
 }
 
-.school-new-student-panel {
+.school-panel {
     border: 1px solid #ddd;
     border-radius: 5px;
     margin-bottom: 35px;
