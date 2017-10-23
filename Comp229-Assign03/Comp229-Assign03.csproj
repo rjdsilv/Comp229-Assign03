@@ -181,6 +181,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\EnrollmentController.cs" />
     <Compile Include="Database\Dao\CourseDAO.cs" />
     <Compile Include="Database\Dao\EnrollmentDAO.cs" />
     <Compile Include="Database\Dao\GenericDAO.cs" />

@@ -43,10 +43,10 @@ namespace Comp229_Assign03.Database.Dao
         ///
         /// <see cref="GenericDAO{TModel}" />
         ///
-        protected override SqlCommand BuildDeleteCommand(SqlConnection cnn, Course modelObject)
+        protected override SqlCommand BuildDeleteCommand(SqlConnection cnn, SqlTransaction tran, Course modelObject)
         {
             string cmdText = "delete from Courses where CourseID = " + ID_PARAM;
-            SqlCommand cmd = new SqlCommand(cmdText, cnn);
+            SqlCommand cmd = null != tran ? new SqlCommand(cmdText, cnn, tran)  : new SqlCommand(cmdText, cnn);
             AddCommandParameter(cmd, ID_PARAM, modelObject.Id);
 
             return cmd;
@@ -55,10 +55,10 @@ namespace Comp229_Assign03.Database.Dao
         ///
         /// <see cref="GenericDAO{TModel}" />
         ///
-        protected override SqlCommand BuildInsertCommand(SqlConnection cnn, Course modelObject)
+        protected override SqlCommand BuildInsertCommand(SqlConnection cnn, SqlTransaction tran, Course modelObject)
         {
             string cmdText = "insert into Courses(CourseID, Title, Credits, DepartmentID) values(" + ID_PARAM + "@Title, @Credits, @DepartmentID)";
-            SqlCommand cmd = new SqlCommand(cmdText, cnn);
+            SqlCommand cmd = null != tran ? new SqlCommand(cmdText, cnn, tran) : new SqlCommand(cmdText, cnn);
             AddCommandParameter(cmd, ID_PARAM, modelObject.Id);
             AddCommandParameter(cmd, "@Title", modelObject.Title);
             AddCommandParameter(cmd, "@Credits", modelObject.Credits);
@@ -70,10 +70,10 @@ namespace Comp229_Assign03.Database.Dao
         ///
         /// <see cref="GenericDAO{TModel}" />
         ///
-        protected override SqlCommand BuildUpdateCommand(SqlConnection cnn, Course modelObject)
+        protected override SqlCommand BuildUpdateCommand(SqlConnection cnn, SqlTransaction tran, Course modelObject)
         {
             string cmdText = "update Courses set Title = @Title, Credits = @Credits, DepartmentID = @DepartmentID where CourseID = " + ID_PARAM;
-            SqlCommand cmd = new SqlCommand(cmdText, cnn);
+            SqlCommand cmd = null != tran ? new SqlCommand(cmdText, cnn, tran) : new SqlCommand(cmdText, cnn);
             AddCommandParameter(cmd, "@Title", modelObject.Title);
             AddCommandParameter(cmd, "@Credits", modelObject.Credits);
             AddCommandParameter(cmd, "@DepartmentID", modelObject.Department.Id);

@@ -2,7 +2,12 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <%-- Error Panel --%>
     <asp:Panel ID="ErrorPanel" runat="server" CssClass="school-error-message-hidden">
-        <div><%= errorMessage %></div>
+        <div><%= message %></div>
+    </asp:Panel>
+
+    <%-- Student success message panel --%>
+    <asp:Panel ID="SuccessRemovalPanel" runat="server" CssClass="school-success-message-hidden">
+        <div><%= message %></div>
     </asp:Panel>
 
     <% if (string.IsNullOrEmpty(Request.QueryString["student"]))

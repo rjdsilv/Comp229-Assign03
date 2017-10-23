@@ -10,5 +10,7 @@ namespace Comp229_Assign03.Database.Dao
     /// Interface containing all the usable methods for the EnrollmentDAO object.
     /// </summary>
     public interface IStudentDAO : IGenericDAO<Student>
-    { }
+    {
+        void DeleteStudentAndDependencies(Student student);
+    }
 }

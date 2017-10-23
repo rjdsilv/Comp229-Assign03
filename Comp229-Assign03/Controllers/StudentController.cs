@@ -34,6 +34,15 @@ namespace Comp229_Assign03.Controllers
         }
 
         /// <summary>
+        /// This method will delete the given student and all its dependencies.
+        /// </summary>
+        /// <param name="student">The student to be deleted.</param>
+        public void DeleteStudentAndDependencies(Student student)
+        {
+            studentDAO.DeleteStudentAndDependencies(student);
+        }
+
+        /// <summary>
         /// Gets all the students from the database and bind it into the Repeater.
         /// <paramref name="repeater">The repeater to be bound.</param>
         /// </summary>
@@ -49,8 +58,16 @@ namespace Comp229_Assign03.Controllers
         /// <returns>The message built</returns>
         public string BuildSaveSucessMessage(string firstName, string lastName)
         {
-            string message = string.Format("<script type='text/javascript'>alert('Student {0}, {1} successfully saved on the database!');</script>", lastName, firstName);
-            return message;
+            return string.Format("Student {0}, {1} successfully saved on the database!", lastName, firstName);
+        }
+
+        /// <summary>
+        /// Builds the successful student removal message for successfully removed students.
+        /// </summary>
+        /// <returns>The message built</returns>
+        public string BuildSucessfulRemovalMessage(string firstName, string lastName)
+        {
+            return string.Format("The student {0}, {1} was successfully removed from the database.", lastName, firstName);
         }
 
         /// <summary>

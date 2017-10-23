@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using Comp229_Assign03.Database.Model;
 using Comp229_Assign03.Database.Exception;
+using System;
 
 namespace Comp229_Assign03.Database.Dao
 {
@@ -20,26 +20,6 @@ namespace Comp229_Assign03.Database.Dao
         protected EnrollmentDAO()
         {
             modelName = "Enrollment";
-        }
-
-        ///
-        /// <see cref="GenericDAO{TModel}" />
-        ///
-        protected override SqlCommand BuildFindAllCommand(SqlConnection cnn)
-        {
-            return new SqlCommand(BuildCompleteSelectAndFromClauses(), cnn);
-        }
-
-        ///
-        /// <see cref="GenericDAO{TModel}" />
-        ///
-        protected override SqlCommand BuildFindByIdCommand(SqlConnection cnn, int id)
-        {
-            string cmdText = BuildCompleteSelectAndFromClauses() + " where en.EnrollmentID = " + ID_PARAM;
-            SqlCommand cmd = new SqlCommand(cmdText, cnn);
-            AddCommandParameter(cmd, ID_PARAM, id);
-
-            return cmd;
         }
 
         ///
@@ -84,12 +64,50 @@ namespace Comp229_Assign03.Database.Dao
         }
 
         ///
+        /// <see cref="IEnrollmentDAO"></see> 
+        ///
+        public void DeleteForStudent(SqlConnection cnn, SqlTransaction tran, Student student)
+        {
+            try
+            {
+                string cmdText = "delete from Enrollments where StudentID = @StudentID";
+                SqlCommand cmd = new SqlCommand(cmdText, cnn, tran);
+                AddCommandParameter(cmd, "@StudentID", student.Id);
+                cmd.ExecuteNonQuery();
+            }
+            catch (System.Exception ex)
+            {
+                throw new DatabaseException(string.Format("An error has occurred when deleting all the {0}s for the Student {0}", modelName, student.Id), ex);
+            }
+        }
+
+        ///
         /// <see cref="GenericDAO{TModel}" />
         ///
-        protected override SqlCommand BuildDeleteCommand(SqlConnection cnn, Enrollment modelObject)
+        protected override SqlCommand BuildFindAllCommand(SqlConnection cnn)
+        {
+            return new SqlCommand(BuildCompleteSelectAndFromClauses(), cnn);
+        }
+
+        ///
+        /// <see cref="GenericDAO{TModel}" />
+        ///
+        protected override SqlCommand BuildFindByIdCommand(SqlConnection cnn, int id)
+        {
+            string cmdText = BuildCompleteSelectAndFromClauses() + " where en.EnrollmentID = " + ID_PARAM;
+            SqlCommand cmd = new SqlCommand(cmdText, cnn);
+            AddCommandParameter(cmd, ID_PARAM, id);
+
+            return cmd;
+        }
+
+        ///
+        /// <see cref="GenericDAO{TModel}" />
+        ///
+        protected override SqlCommand BuildDeleteCommand(SqlConnection cnn, SqlTransaction tran, Enrollment modelObject)
         {
             string cmdText = "delete from Enrollments where EnrollmentID = " + ID_PARAM;
-            SqlCommand cmd = new SqlCommand(cmdText, cnn);
+            SqlCommand cmd = null != tran ? new SqlCommand(cmdText, cnn, tran) : new SqlCommand(cmdText, cnn);
             AddCommandParameter(cmd, ID_PARAM, modelObject.Id);
 
             return cmd;
@@ -98,10 +116,10 @@ namespace Comp229_Assign03.Database.Dao
         ///
         /// <see cref="GenericDAO{TModel}" />
         ///
-        protected override SqlCommand BuildInsertCommand(SqlConnection cnn, Enrollment modelObject)
+        protected override SqlCommand BuildInsertCommand(SqlConnection cnn, SqlTransaction tran, Enrollment modelObject)
         {
             string cmdText = "insert into Enrollments(Grade, CourseID, StudentID) values(@Grade, @CourseID, @StudentID)";
-            SqlCommand cmd = new SqlCommand(cmdText, cnn);
+            SqlCommand cmd = null != tran ? new SqlCommand(cmdText, cnn, tran) : new SqlCommand(cmdText, cnn);
             AddCommandParameter(cmd, "@Grade", modelObject.Grade);
             AddCommandParameter(cmd, "@CourseID", modelObject.Course.Id);
             AddCommandParameter(cmd, "@StudentID", modelObject.Student.Id);
@@ -112,10 +130,10 @@ namespace Comp229_Assign03.Database.Dao
         ///
         /// <see cref="GenericDAO{TModel}" />
         ///
-        protected override SqlCommand BuildUpdateCommand(SqlConnection cnn, Enrollment modelObject)
+        protected override SqlCommand BuildUpdateCommand(SqlConnection cnn, SqlTransaction tran, Enrollment modelObject)
         {
             string cmdText = "update Enrollments set Grade = @Grade where EnrollmentID = " + ID_PARAM;
-            SqlCommand cmd = new SqlCommand(cmdText, cnn);
+            SqlCommand cmd = null != tran ? new SqlCommand(cmdText, cnn, tran) : new SqlCommand(cmdText, cnn);
             AddCommandParameter(cmd, "@Grade", modelObject.Grade);
             AddCommandParameter(cmd, ID_PARAM, modelObject.Id);
 

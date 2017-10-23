@@ -1,4 +1,6 @@
-﻿namespace Comp229_Assign03.Database.Model
+﻿using System;
+
+namespace Comp229_Assign03.Database.Model
 {
     /// <summary>
     /// <b>Class</b>      : Department
@@ -6,6 +8,7 @@
     /// <b>Author</b>     : Rodrigo Januario da Silva
     /// <b>Version</b>    : 1.0.0
     /// </summary>
+    [Serializable]
     public class Department : GenericModel
     {
         public string Name { get; set; }

@@ -151,14 +151,24 @@ a {
     transform: translateY(4px);
 }
 
-.school-error-message,
-.school-error-message-hidden {
+.school-success-message,
+.school-error-message {
     font-family: Calibri;
-    font-size: 14px;
+    font-size: 20px;
+    display: block;
+    text-align: center;
+}
+
+.school-error-message {
     color: red;
 }
 
-.school-error-message-hidden {
+.school-success-message {
+    color: rgb(0, 150, 0);
+}
+
+.school-error-message-hidden,
+.school-success-message-hidden {
     display: none;
 }
 

@@ -28,7 +28,7 @@ namespace Comp229_Assign03.Database.Dao
         protected string connectionString = ConfigurationManager.ConnectionStrings["Assignment03CnnStr"].ConnectionString;
 
         // Delegate declarations.
-        protected delegate SqlCommand BuildNonQueryCommand(SqlConnection cnn, TModel modelObject);
+        protected delegate SqlCommand BuildNonQueryCommand(SqlConnection cnn, SqlTransaction tran, TModel modelObject);
 
         ///
         /// <see cref="IGenericDAO{TModel}" />
@@ -136,15 +136,6 @@ namespace Comp229_Assign03.Database.Dao
         protected abstract string BuildCompleteSelectAndFromClauses();
 
         /// <summary>
-        /// Builds a specific delete command for the model object passed as parameter.
-        /// </summary>
-        /// <param name="cnn">The database connection object</param>
-        /// <param name="modelObject">The object to be deleted from the database</param>
-        /// <returns>The delete command built.</returns>
-        /// <exception cref="Database.Exception.DatabaseException">If some error occurs during the delete operation.</exception>
-        protected abstract SqlCommand BuildDeleteCommand(SqlConnection cnn, TModel modelObject);
-
-        /// <summary>
         /// Builds a specific command for finding all the objects from the model object passed as parameter.
         /// </summary>
         /// <param name="cnn">The database connection object</param>
@@ -162,22 +153,34 @@ namespace Comp229_Assign03.Database.Dao
         protected abstract SqlCommand BuildFindByIdCommand(SqlConnection cnn, int id);
 
         /// <summary>
+        /// Builds a specific delete command for the model object passed as parameter.
+        /// </summary>
+        /// <param name="cnn">The database connection object</param>
+        /// <param name="tran">The transaction to be used. Null if no transaction</param>
+        /// <param name="modelObject">The object to be deleted from the database</param>
+        /// <returns>The delete command built.</returns>
+        /// <exception cref="Database.Exception.DatabaseException">If some error occurs during the delete operation.</exception>
+        protected abstract SqlCommand BuildDeleteCommand(SqlConnection cnn, SqlTransaction tran, TModel modelObject);
+
+        /// <summary>
         /// Builds a specific insert command for the model object passed as parameter.
         /// </summary>
         /// <param name="cnn">The database connection object</param>
+        /// <param name="tran">The transaction to be used. Null if no transaction</param>
         /// <param name="modelObject">The object to be inserted in the database</param>
         /// <returns>The insert command built.</returns>
         /// <exception cref="Database.Exception.DatabaseException">If some error occurs during the insert operation.</exception>
-        protected abstract SqlCommand BuildInsertCommand(SqlConnection cnn, TModel modelObject);
+        protected abstract SqlCommand BuildInsertCommand(SqlConnection cnn, SqlTransaction tran, TModel modelObject);
 
         /// <summary>
         /// Builds a specific update command for the model object passed as parameter.
         /// </summary>
         /// <param name="cnn">The database connection object</param>
+        /// <param name="tran">The transaction to be used. Null if no transaction</param>
         /// <param name="modelObject">The object to be updated in the database</param>
         /// <returns>The update command built.</returns>
         /// <exception cref="Database.Exception.DatabaseException">If some error occurs during the update operation.</exception>
-        protected abstract SqlCommand BuildUpdateCommand(SqlConnection cnn, TModel modelObject);
+        protected abstract SqlCommand BuildUpdateCommand(SqlConnection cnn, SqlTransaction tran, TModel modelObject);
 
         /// <summary>
         /// Builds an model object from a given reader with recorsds returned from the database.
@@ -224,7 +227,7 @@ namespace Comp229_Assign03.Database.Dao
                 using (SqlConnection cnn = new SqlConnection(connectionString))
                 {
                     // Disposes automatically the command when exiting the using statement.
-                    using (SqlCommand cmd = BuildNonQueryCommandMethod(cnn, modelObject))
+                    using (SqlCommand cmd = BuildNonQueryCommandMethod(cnn, null, modelObject))
                     {
                         cnn.Open();
                         cmd.ExecuteNonQuery();

@@ -8,6 +8,7 @@ namespace Comp229_Assign03.Database.Model
     /// <b>Author</b>     : Rodrigo Januario da Silva
     /// <b>Version</b>    : 1.0.0
     /// </summary>
+    [Serializable]
     public class Student : GenericModel
     {
         private DateTime enrollmentDate;

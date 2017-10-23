@@ -12,12 +12,41 @@ namespace Comp229_Assign03.Database.Dao
     /// </summary>
     public class StudentDAO : GenericDAO<Student, StudentDAO>, IStudentDAO
     {
+        private EnrollmentDAO enrollmentDAO = EnrollmentDAO.GetInstance();
+
         /// <summary>
         /// Creates a new instance of the StudentDAO class.
         /// </summary>
         protected StudentDAO()
         {
             modelName = "Student";
+        }
+
+        ///
+        /// <see cref="IStudentDAO{TModel}" />
+        ///
+        public void DeleteStudentAndDependencies(Student student)
+        {
+            using (SqlConnection cnn = new SqlConnection(connectionString))
+            {
+                SqlTransaction tran = null;
+
+                try
+                {
+                    cnn.Open();
+                    tran = cnn.BeginTransaction();
+                    enrollmentDAO.DeleteForStudent(cnn, tran, student);
+                    BuildDeleteCommand(cnn, tran, student).ExecuteNonQuery();
+                    tran.Commit();
+                }
+                catch (System.Exception)
+                {
+                    if (null != tran)
+                    {
+                        tran.Rollback();
+                    }
+                }
+            }
         }
 
         ///
@@ -43,10 +72,10 @@ namespace Comp229_Assign03.Database.Dao
         ///
         /// <see cref="GenericDAO{TModel}" />
         ///
-        protected override SqlCommand BuildDeleteCommand(SqlConnection cnn, Student modelObject)
+        protected override SqlCommand BuildDeleteCommand(SqlConnection cnn, SqlTransaction tran, Student modelObject)
         {
             string cmdText = "delete from Students where StudentID = " + ID_PARAM;
-            SqlCommand cmd = new SqlCommand(cmdText, cnn);
+            SqlCommand cmd = null != tran ? new SqlCommand(cmdText, cnn, tran) : new SqlCommand(cmdText, cnn);
             AddCommandParameter(cmd, ID_PARAM, modelObject.Id);
 
             return cmd;
@@ -55,10 +84,10 @@ namespace Comp229_Assign03.Database.Dao
         ///
         /// <see cref="GenericDAO{TModel}" />
         ///
-        protected override SqlCommand BuildInsertCommand(SqlConnection cnn, Student modelObject)
+        protected override SqlCommand BuildInsertCommand(SqlConnection cnn, SqlTransaction tran, Student modelObject)
         {
             string cmdText = "insert into Students(LastName, FirstMidName, EnrollmentDate) values(@LastName, @FirstMidName, GetDate())";
-            SqlCommand cmd = new SqlCommand(cmdText, cnn);
+            SqlCommand cmd = null != tran ? new SqlCommand(cmdText, cnn, tran) : new SqlCommand(cmdText, cnn);
             AddCommandParameter(cmd, "@LastName", modelObject.LastName);
             AddCommandParameter(cmd, "@FirstMidName", modelObject.FirstMidName);
 
@@ -68,10 +97,10 @@ namespace Comp229_Assign03.Database.Dao
         ///
         /// <see cref="GenericDAO{TModel}" />
         ///
-        protected override SqlCommand BuildUpdateCommand(SqlConnection cnn, Student modelObject)
+        protected override SqlCommand BuildUpdateCommand(SqlConnection cnn, SqlTransaction tran, Student modelObject)
         {
             string cmdText = "update Students set LastName = @LastName, FirstMidName = @FirstMidName, EnrollmentDate = @EnrollmentDate where StudentID = " + ID_PARAM;
-            SqlCommand cmd = new SqlCommand(cmdText, cnn);
+            SqlCommand cmd = null != tran ? new SqlCommand(cmdText, cnn, tran) : new SqlCommand(cmdText, cnn);
             AddCommandParameter(cmd, "@LastName", modelObject.LastName);
             AddCommandParameter(cmd, "@FirstMidName", modelObject.FirstMidName);
             AddCommandParameter(cmd, "@EnrollmentDate", modelObject.EnrollmentDateTime);
