@@ -6,13 +6,28 @@ using System.Web.UI.WebControls;
 
 namespace Comp229_Assign03.Controllers
 {
+    /// <summary>
+    /// <b>Class</b>      : StudentController
+    /// <b>Description</b>: Controller class for dealing with Students and its operations.
+    /// <b>Author</b>     : Rodrigo Januario da Silva
+    /// <b>Version</b>    : 1.0.0
+    /// </summary>
     public class StudentController : Singleton<StudentController>
     {
-        private StudentDAO studentDAO = StudentDAO.GetInstance();
+        // Private attributes declaration.
+        private IStudentDAO studentDAO = StudentDAO.GetInstance();
+        private IEnrollmentDAO enrollmentDAO = EnrollmentDAO.GetInstance();
 
+        /// <summary>
+        /// Creates a new instance of the StudentDAO class.
+        /// </summary>
         private StudentController()
         { }
 
+        /// <summary>
+        /// Inserts the given student on the database.
+        /// </summary>
+        /// <param name="student">The student to be inserted.</param>
         public void InsertStudent(Student student)
         {
             studentDAO.Insert(student);
@@ -24,8 +39,7 @@ namespace Comp229_Assign03.Controllers
         /// </summary>
         public void GetAllStudentsAndBindToRepeater(ref Repeater repeater)
         {
-            List<Student> allStudents = studentDAO.FindAll();
-            repeater.DataSource = allStudents;
+            repeater.DataSource = studentDAO.FindAll();
             repeater.DataBind();
         }
 
@@ -39,9 +53,28 @@ namespace Comp229_Assign03.Controllers
             return message;
         }
 
+        /// <summary>
+        /// Finds a student by its given id.
+        /// </summary>
+        /// <param name="id">The student identification on the database.</param>
+        /// <returns></returns>
         public Student FindStudentById(int id)
         {
             return studentDAO.FindById(id);
+        }
+
+        /// <summary>
+        /// Finds all enrolled courses for a given student and binds it to the given repeater.
+        /// </summary>
+        /// <param name="student">The student whose erolled courses must be found</param>
+        /// <return>The number of enrolled courses.</return>
+        public int FindAllEnrollmentsForStudentAndBindToRepeater(Student student, ref Repeater repeater)
+        {
+            List<Enrollment> allEnrollments = enrollmentDAO.FindByStudent(student);
+            repeater.DataSource = allEnrollments;
+            repeater.DataBind();
+
+            return allEnrollments.Count;
         }
     }
 }

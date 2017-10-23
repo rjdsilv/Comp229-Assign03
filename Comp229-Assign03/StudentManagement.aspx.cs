@@ -2,6 +2,7 @@
 using Comp229_Assign03.Database.Exception;
 using Comp229_Assign03.Database.Model;
 using System;
+using System.Collections.Generic;
 using System.Web.UI;
 
 namespace Comp229_Assign03
@@ -10,7 +11,9 @@ namespace Comp229_Assign03
     {
         // Protect attributes to be used on the page.
         protected StudentController studentController = StudentController.GetInstance();
+        protected Student selectedStudent = new Student();
         protected string errorMessage = "";
+        protected int enrolledCourses = 0;
 
 
         // Raised when the page is loaded.
@@ -30,12 +33,17 @@ namespace Comp229_Assign03
                     // Shows the selected student
                     else
                     {
-
+                        selectedStudent = studentController.FindStudentById(int.Parse(Request.QueryString["student"]));
+                        enrolledCourses = studentController.FindAllEnrollmentsForStudentAndBindToRepeater(selectedStudent, ref StudentEnrolledCoursesRepeater);
                     }
                 }
                 catch (DatabaseException ex)
                 {
                     ShowErrorMessage(ex.Message);
+                }
+                catch (System.Exception ex)
+                {
+                    ShowErrorMessage("The system failed with the following message: " + ex.Message);
                 }
             }
         }
@@ -47,6 +55,12 @@ namespace Comp229_Assign03
             studentController.GetAllStudentsAndBindToRepeater(ref StudentsRepeater);
             Response.Write(studentController.BuildSaveSucessMessage(StudentFirstMidNameTextBox.Text, StudentLastNameTextBox.Text));
             ClearTextBoxes();
+        }
+
+        // Removes the selected student and all the enrolled courses he/she has.
+        protected void RemoveStudentImageButton_Click(object sender, ImageClickEventArgs e)
+        {
+
         }
 
         /// <summary>

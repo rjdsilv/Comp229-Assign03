@@ -140,7 +140,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Images\DeleteIcon.png" />
     <Content Include="Images\HeroImage.png" />
+    <Content Include="Images\UpdateIcon.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -180,8 +182,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Database\Dao\CourseDAO.cs" />
+    <Compile Include="Database\Dao\EnrollmentDAO.cs" />
     <Compile Include="Database\Dao\GenericDAO.cs" />
+    <Compile Include="Database\Dao\IEnrollmentDAO.cs" />
     <Compile Include="Database\Dao\IGenericDAO.cs" />
+    <Compile Include="Database\Dao\IStudentDAO.cs" />
     <Compile Include="Database\Dao\StudentDAO.cs" />
     <Compile Include="Database\Exception\DatabaseException.cs" />
     <Compile Include="Database\Model\Course.cs" />

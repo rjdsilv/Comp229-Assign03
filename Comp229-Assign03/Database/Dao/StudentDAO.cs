@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
 using Comp229_Assign03.Database.Model;
-using Comp229_Assign03.Patterns;
 
 namespace Comp229_Assign03.Database.Dao
 {
@@ -11,7 +10,7 @@ namespace Comp229_Assign03.Database.Dao
     /// <b>Author</b>     : Rodrigo Januario da Silva
     /// <b>Version</b>    : 1.0.0
     /// </summary>
-    public class StudentDAO : GenericDAO<Student, StudentDAO>
+    public class StudentDAO : GenericDAO<Student, StudentDAO>, IStudentDAO
     {
         /// <summary>
         /// Creates a new instance of the StudentDAO class.
@@ -26,14 +25,7 @@ namespace Comp229_Assign03.Database.Dao
         ///
         protected override SqlCommand BuildFindAllCommand(SqlConnection cnn)
         {
-            string cmdText = "select StudentID " +
-                             ",      LastName " +
-                             ",      FirstMidName " +
-                             ",      EnrollmentDate " +
-                             "from   Students";
-            SqlCommand cmd = new SqlCommand(cmdText, cnn);
-
-            return cmd;
+            return new SqlCommand(BuildCompleteSelectAndFromClauses(), cnn);
         }
 
         ///
@@ -41,12 +33,7 @@ namespace Comp229_Assign03.Database.Dao
         ///
         protected override SqlCommand BuildFindByIdCommand(SqlConnection cnn, int id)
         {
-            string cmdText = "select StudentID " +
-                             ",      LastName " +
-                             ",      FirstMidName " +
-                             ",      EnrollmentDate " +
-                             "from   Students " +
-                             "where  StudentID = " + ID_PARAM;
+            string cmdText = BuildCompleteSelectAndFromClauses() + " where StudentID = " + ID_PARAM;
             SqlCommand cmd = new SqlCommand(cmdText, cnn);
             AddCommandParameter(cmd, ID_PARAM, id);
 
@@ -99,10 +86,10 @@ namespace Comp229_Assign03.Database.Dao
         protected override Student BuildObjectFromReader(SqlDataReader reader)
         {
             return new Student(
-                reader.GetInt32(reader.GetOrdinal("StudentID")),              // The students's id
-                reader.GetString(reader.GetOrdinal("LastName")),              // The students's last name
-                reader.GetString(reader.GetOrdinal("FirstMidName")), // The students's first and middle names
-                reader.GetDateTime(reader.GetOrdinal("EnrollmentDate"))       // The students's enrollment date
+                reader.GetInt32(reader.GetOrdinal("StudentID")),        // The students's id
+                reader.GetString(reader.GetOrdinal("LastName")),        // The students's last name
+                reader.GetString(reader.GetOrdinal("FirstMidName")),    // The students's first and middle names
+                reader.GetDateTime(reader.GetOrdinal("EnrollmentDate")) // The students's enrollment date
             );
         }
 
@@ -112,6 +99,18 @@ namespace Comp229_Assign03.Database.Dao
         protected override Student BuildUknownModelObject()
         {
             return new Student();
+        }
+
+        ///
+        /// <see cref="GenericDAO{TModel}" />
+        ///
+        protected override string BuildCompleteSelectAndFromClauses()
+        {
+            return "select StudentID " +
+                   ",      LastName " +
+                   ",      FirstMidName " +
+                   ",      EnrollmentDate " +
+                   "from   Students";
         }
     }
 }

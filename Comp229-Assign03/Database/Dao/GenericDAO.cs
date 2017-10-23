@@ -130,6 +130,11 @@ namespace Comp229_Assign03.Database.Dao
             ExecuteNonQueryCommand(modelObject, string.Format("An error has occurred when updating the {0} {1} in the database! Please check if your database is online and set up correctly.", modelName, modelObject), BuildUpdateCommand);
         }
 
+        ///
+        /// <see cref="IGenericDAO{TModel}" />
+        ///
+        protected abstract string BuildCompleteSelectAndFromClauses();
+
         /// <summary>
         /// Builds a specific delete command for the model object passed as parameter.
         /// </summary>

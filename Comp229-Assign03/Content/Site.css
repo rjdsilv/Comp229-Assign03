@@ -6,14 +6,13 @@ body {
 }
 
 footer {
-    margin-top: 30px;
     font-size: 15px;
     background-color: rgb(10, 131, 166);
     padding: 10px 0 0 0;
     color: #fff;
     position: fixed;
+    bottom: 0;
     width: 100%;
-    bottom: 0
 }
 
 /* Wrapping element */
@@ -21,13 +20,12 @@ footer {
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-    margin-bottom: 65px;
+    margin-bottom: 50px;
 }
 
 a {
     color: #353535;
 }
-
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
@@ -97,7 +95,9 @@ a {
 
 /* Defining the student table colors. */
 .table-header,
+.table-header-light,
 .table-row,
+.table-row-light,
 .table-row-alternate {
     height: 45px;
     line-height: 45px;
@@ -109,6 +109,12 @@ a {
     color: #fff;
     font-weight: bolder;
     text-transform: uppercase;
+}
+
+.table-header-light {
+    background-color: rgba(0, 0, 75, 0.75);
+    color: #fff;
+    font-weight: bolder;
 }
 
 .table-row-alternate {
@@ -156,6 +162,7 @@ a {
     display: none;
 }
 
+/* Input definition */
 .school-input {
     padding: 10px;
     border: 2px solid rgb(30, 50, 130);
@@ -167,10 +174,10 @@ a {
     font-size: 18px;
 }
 
+/* Panel Definition */
 .school-panel {
     border: 1px solid #ddd;
     border-radius: 5px;
-    margin-bottom: 35px;
     overflow: auto;
     padding: 5px;
 }
@@ -183,4 +190,17 @@ a {
     color: white;
     padding: 5px;
     border-radius: 5px;
+}
+
+/* Action buton definition */
+.action-button {
+    height: 25px;
+    width: 30px;
+    margin-top: 10px;
+}
+
+.school-message {
+    font-size: 23px;
+    text-align: center;
+    color: rgb(0, 0, 150);
 }

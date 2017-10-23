@@ -10,7 +10,7 @@ namespace Comp229_Assign03.Database.Dao
     /// <b>Version</b>    : 1.0.0
     /// </summary>
     /// <typeparam name="TModel">The model class to be used.</typeparam>
-    interface IGenericDAO<TModel> where TModel : GenericModel
+    public interface IGenericDAO<TModel> where TModel : GenericModel
     {
         /// <summary>
         /// Finds a database object represented by TModel by its id.

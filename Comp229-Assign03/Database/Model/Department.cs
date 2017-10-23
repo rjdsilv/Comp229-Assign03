@@ -9,7 +9,7 @@
     public class Department : GenericModel
     {
         public string Name { get; set; }
-        public float Budget { get; set; }
+        public decimal Budget { get; set; }
 
         /// <summary>
         /// Creates a new unknown instance of the Department class.
@@ -17,7 +17,7 @@
         internal Department() : base()
         {
             Name = "UNKNOWN";
-            Budget = 0.0f;
+            Budget = 0.0m;
         }
 
         /// <summary>
@@ -26,11 +26,11 @@
         /// <param name="departmentID">The department's identification.</param>
         /// <param name="name">The department's name.</param>
         /// <param name="budget">The department's budget.</param>
-        public Department(int departmentID, string name, float budget)
+        public Department(int departmentID, string name, decimal budget)
         {
             Id = departmentID;
-            this.Name = name;
-            this.Budget = budget;
+            Name = name;
+            Budget = budget;
         }
     }
 }

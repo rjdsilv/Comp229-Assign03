@@ -1,5 +1,6 @@
 ﻿using Comp229_Assign03.Database.Model;
 using System.Data.SqlClient;
+using System;
 
 namespace Comp229_Assign03.Database.Dao
 {
@@ -24,18 +25,7 @@ namespace Comp229_Assign03.Database.Dao
         ///
         protected override SqlCommand BuildFindAllCommand(SqlConnection cnn)
         {
-            string cmdText = "select     co.CourseID " +
-                             ",          co.Title " +
-                             ",          co.Credits " +
-                             ",          de.DepartmentID " +
-                             ",          de.Name " +
-                             ",          de.Budget " +
-                             "from       Courses     co " +
-                             "inner join Departments de " +
-                             "on         co.DepartmentID = de.DepartmentID";
-            SqlCommand cmd = new SqlCommand(cmdText, cnn);
-
-            return cmd;
+            return new SqlCommand(BuildCompleteSelectAndFromClauses(), cnn);
         }
 
         ///
@@ -43,16 +33,7 @@ namespace Comp229_Assign03.Database.Dao
         ///
         protected override SqlCommand BuildFindByIdCommand(SqlConnection cnn, int id)
         {
-            string cmdText = "select     co.CourseID " +
-                             ",          co.Title " +
-                             ",          co.Credits " +
-                             ",          de.DepartmentID " +
-                             ",          de.Name " +
-                             ",          de.Budget " +
-                             "from       Courses     co " +
-                             "inner join Departments de " +
-                             "on         co.DepartmentID = de.DepartmentID " +
-                             "where      co.CourseID     = " + ID_PARAM;
+            string cmdText = BuildCompleteSelectAndFromClauses() + " where co.CourseID = " + ID_PARAM;
             SqlCommand cmd = new SqlCommand(cmdText, cnn);
             AddCommandParameter(cmd, ID_PARAM, id);
 
@@ -113,7 +94,7 @@ namespace Comp229_Assign03.Database.Dao
                 new Department(
                     reader.GetInt32(reader.GetOrdinal("DepartmentID")), // The department's id.
                     reader.GetString(reader.GetOrdinal("Name")),        // The department's name.
-                    reader.GetFloat(reader.GetOrdinal("Budget"))        // The department's budget.
+                    reader.GetDecimal(reader.GetOrdinal("Budget"))      // The department's budget.
                 )
             );
         }
@@ -124,6 +105,22 @@ namespace Comp229_Assign03.Database.Dao
         protected override Course BuildUknownModelObject()
         {
             return new Course();
+        }
+
+        ///
+        /// <see cref="GenericDAO{TModel}" />
+        ///
+        protected override string BuildCompleteSelectAndFromClauses()
+        {
+            return "select     co.CourseID " +
+                   ",          co.Title " +
+                   ",          co.Credits " +
+                   ",          de.DepartmentID " +
+                   ",          de.Name " +
+                   ",          de.Budget " +
+                   "from       Courses     co " +
+                   "inner join Departments de " +
+                   "on         co.DepartmentID = de.DepartmentID";
         }
     }
 }
