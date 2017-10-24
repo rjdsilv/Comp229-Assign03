@@ -10,14 +10,14 @@ namespace Comp229_Assign03.Database.Dao
     /// <b>Author</b>     : Rodrigo Januario da Silva
     /// <b>Version</b>    : 1.0.0
     /// </summary>
-    public class CourseDAO : GenericDAO<Course, CourseDAO>
+    public class CourseDAO : GenericDAO<Course, CourseDAO>, ICourseDAO
     {
         /// <summary>
         /// Creates a new instance of the CourseDAO class.
         /// </summary>
         private CourseDAO()
         {
-            modelName = "Course";
+            ModelName = "Course";
         }
 
         ///
@@ -57,9 +57,8 @@ namespace Comp229_Assign03.Database.Dao
         ///
         protected override SqlCommand BuildInsertCommand(SqlConnection cnn, SqlTransaction tran, Course modelObject)
         {
-            string cmdText = "insert into Courses(CourseID, Title, Credits, DepartmentID) values(" + ID_PARAM + "@Title, @Credits, @DepartmentID)";
+            string cmdText = "insert into Courses(Title, Credits, DepartmentID) values(@Title, @Credits, @DepartmentID)";
             SqlCommand cmd = null != tran ? new SqlCommand(cmdText, cnn, tran) : new SqlCommand(cmdText, cnn);
-            AddCommandParameter(cmd, ID_PARAM, modelObject.Id);
             AddCommandParameter(cmd, "@Title", modelObject.Title);
             AddCommandParameter(cmd, "@Credits", modelObject.Credits);
             AddCommandParameter(cmd, "@DepartmentID", modelObject.Department.Id);
@@ -83,7 +82,7 @@ namespace Comp229_Assign03.Database.Dao
         }
 
         ///
-        /// <see cref="IGenericDAO{TModel}" />
+        /// <see cref="GenericDAO{TModel}" />
         ///
         protected override Course BuildObjectFromReader(SqlDataReader reader)
         {

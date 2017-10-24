@@ -55,7 +55,7 @@
                     <ul class="nav navbar-nav">
                         <li><a runat="server" href="~/">Home</a></li>
                         <li><a runat="server" href="~/StudentManagement">Student Management</a></li>
-                        <li><a runat="server" href="~/Contact">Contact</a></li>
+                        <li><a runat="server" href="~/CourseManagement">Course Management</a></li>
                     </ul>
                 </div>
             </div>

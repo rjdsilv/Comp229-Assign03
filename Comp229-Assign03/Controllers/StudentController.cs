@@ -19,7 +19,7 @@ namespace Comp229_Assign03.Controllers
         private IEnrollmentDAO enrollmentDAO = EnrollmentDAO.GetInstance();
 
         /// <summary>
-        /// Creates a new instance of the StudentDAO class.
+        /// Creates a new instance of the StudentController class.
         /// </summary>
         private StudentController()
         { }
@@ -55,6 +55,8 @@ namespace Comp229_Assign03.Controllers
         /// <summary>
         /// Builds the success message for successfully included students.
         /// </summary>
+        /// <param name="firstName">The student's first name</param>
+        /// <param name="lastName">The student's last name</param>
         /// <returns>The message built</returns>
         public string BuildSaveSucessMessage(string firstName, string lastName)
         {
@@ -64,6 +66,8 @@ namespace Comp229_Assign03.Controllers
         /// <summary>
         /// Builds the successful student removal message for successfully removed students.
         /// </summary>
+        /// <param name="firstName">The student's first name</param>
+        /// <param name="lastName">The student's last name</param>
         /// <returns>The message built</returns>
         public string BuildSucessfulRemovalMessage(string firstName, string lastName)
         {
@@ -74,7 +78,7 @@ namespace Comp229_Assign03.Controllers
         /// Finds a student by its given id.
         /// </summary>
         /// <param name="id">The student identification on the database.</param>
-        /// <returns></returns>
+        /// <returns>The student found</returns>
         public Student FindStudentById(int id)
         {
             return studentDAO.FindById(id);

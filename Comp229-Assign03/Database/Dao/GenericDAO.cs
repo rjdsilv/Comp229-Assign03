@@ -21,14 +21,14 @@ namespace Comp229_Assign03.Database.Dao
         // Constant declaration.
         protected const string ID_PARAM = "@Id";
 
-        // Attributes declaration.
-        protected string modelName = "";
-
         // The connection string defined in Web.config.
         protected string connectionString = ConfigurationManager.ConnectionStrings["Assignment03CnnStr"].ConnectionString;
 
         // Delegate declarations.
         protected delegate SqlCommand BuildNonQueryCommand(SqlConnection cnn, SqlTransaction tran, TModel modelObject);
+
+        // Properties declaration.
+        public string ModelName { get; set; }
 
         ///
         /// <see cref="IGenericDAO{TModel}" />
@@ -63,7 +63,7 @@ namespace Comp229_Assign03.Database.Dao
             }
             catch (System.Exception ex)
             {
-                throw new DatabaseException(string.Format("An error has occurred when getting all the {0}s from the database! Please check if your database is online and set up correctly.", modelName), ex);
+                throw new DatabaseException(string.Format("An error has occurred when getting all the {0}s from the database! Please check if your database is online and set up correctly.", ModelName), ex);
             }
 
             return allObjects;
@@ -100,7 +100,7 @@ namespace Comp229_Assign03.Database.Dao
             }
             catch (System.Exception ex)
             {
-                throw new DatabaseException(string.Format("An error has occurred when getting the {0} with Id = {1} from the database! Please check if your database is online and set up correctly.", modelName, id), ex);
+                throw new DatabaseException(string.Format("An error has occurred when getting the {0} with Id = {1} from the database! Please check if your database is online and set up correctly.", ModelName, id), ex);
             }
 
             return course;
@@ -111,7 +111,7 @@ namespace Comp229_Assign03.Database.Dao
         ///
         public void Delete(TModel modelObject)
         {
-            ExecuteNonQueryCommand(modelObject, string.Format("An error has occurred when deleting the {0} {1} from the database! Please check if your database is online and set up correctly.", modelName, modelObject), BuildDeleteCommand);
+            ExecuteNonQueryCommand(modelObject, string.Format("An error has occurred when deleting the {0} {1} from the database! Please check if your database is online and set up correctly.", ModelName, modelObject), BuildDeleteCommand);
         }
 
         ///
@@ -119,7 +119,7 @@ namespace Comp229_Assign03.Database.Dao
         ///
         public void Insert(TModel modelObject)
         {
-            ExecuteNonQueryCommand(modelObject, string.Format("An error has occurred when inserting the {0} {1} in the database! Please check if your database is online and set up correctly.", modelName, modelObject), BuildInsertCommand);
+            ExecuteNonQueryCommand(modelObject, string.Format("An error has occurred when inserting the {0} {1} in the database! Please check if your database is online and set up correctly.", ModelName, modelObject), BuildInsertCommand);
         }
 
         ///
@@ -127,7 +127,7 @@ namespace Comp229_Assign03.Database.Dao
         ///
         public void Update(TModel modelObject)
         {
-            ExecuteNonQueryCommand(modelObject, string.Format("An error has occurred when updating the {0} {1} in the database! Please check if your database is online and set up correctly.", modelName, modelObject), BuildUpdateCommand);
+            ExecuteNonQueryCommand(modelObject, string.Format("An error has occurred when updating the {0} {1} in the database! Please check if your database is online and set up correctly.", ModelName, modelObject), BuildUpdateCommand);
         }
 
         ///

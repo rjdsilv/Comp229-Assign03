@@ -129,6 +129,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CourseManagement.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -181,10 +182,21 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\EnrollmentController.cs" />
+    <Compile Include="Controllers\CourseController.cs" />
+    <Compile Include="Controllers\DepartmentController.cs" />
+    <Compile Include="CourseManagement.aspx.cs">
+      <DependentUpon>CourseManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CourseManagement.aspx.designer.cs">
+      <DependentUpon>CourseManagement.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Database\Dao\CourseDAO.cs" />
+    <Compile Include="Database\Dao\DepartmentDAO.cs" />
     <Compile Include="Database\Dao\EnrollmentDAO.cs" />
     <Compile Include="Database\Dao\GenericDAO.cs" />
+    <Compile Include="Database\Dao\ICourseDAO.cs" />
+    <Compile Include="Database\Dao\IDepartmentDAO.cs" />
     <Compile Include="Database\Dao\IEnrollmentDAO.cs" />
     <Compile Include="Database\Dao\IGenericDAO.cs" />
     <Compile Include="Database\Dao\IStudentDAO.cs" />

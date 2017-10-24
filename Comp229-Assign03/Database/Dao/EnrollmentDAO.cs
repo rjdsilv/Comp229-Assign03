@@ -19,7 +19,7 @@ namespace Comp229_Assign03.Database.Dao
         /// </summary>
         protected EnrollmentDAO()
         {
-            modelName = "Enrollment";
+            ModelName = "Enrollment";
         }
 
         ///
@@ -27,40 +27,15 @@ namespace Comp229_Assign03.Database.Dao
         ///
         public List<Enrollment> FindByStudent(Student student)
         {
-            List<Enrollment> allEnrollments = new List<Enrollment>();
+            return FindByModel(student, " where en.StudentID = @ModelID order by CourseID", "Student");
+        }
 
-            try
-            {
-                // Disposes and closes automatically the connection when exiting the using statement.
-                using (SqlConnection cnn = new SqlConnection(connectionString))
-                {
-                    // Disposes automatically the command when exiting the using statement.
-                    string cmdText = BuildCompleteSelectAndFromClauses() + " where en.StudentID = @StudentID order by CourseID";
-                    using (SqlCommand cmd = new SqlCommand(cmdText, cnn))
-                    {
-                        AddCommandParameter(cmd, "@StudentID", student.Id);
-                        cnn.Open();
-
-                        // Disposes and closes automatically the data reader when exiting the using statement.
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                while (reader.Read())
-                                {
-                                    allEnrollments.Add(BuildObjectFromReader(reader));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                throw new DatabaseException(string.Format("An error has occurred when getting all the {0}s for the Student {1} from the database! Please check if your database is online and set up correctly.", modelName, student.Id), ex);
-            }
-
-            return allEnrollments;
+        ///
+        /// <see cref="IEnrollmentDAO"></see> 
+        ///
+        public List<Enrollment> FindByCourse(Course course)
+        {
+            return FindByModel(course, " where en.CourseID = @ModelID order by StudentID", "Course");
         }
 
         ///
@@ -77,7 +52,7 @@ namespace Comp229_Assign03.Database.Dao
             }
             catch (System.Exception ex)
             {
-                throw new DatabaseException(string.Format("An error has occurred when deleting all the {0}s for the Student {0}", modelName, student.Id), ex);
+                throw new DatabaseException(string.Format("An error has occurred when deleting all the {0}s for the Student {0}", ModelName, student.Id), ex);
             }
         }
 
@@ -199,6 +174,51 @@ namespace Comp229_Assign03.Database.Dao
                    "on         en.StudentID    = st.StudentID " +
                    "inner join Departments     de " +
                    "on         co.DepartmentID = de.DepartmentID ";
+        }
+
+        /// <summary>
+        /// Finds a list of enrollments for the given model object
+        /// </summary>
+        /// <param name="model">The model whose enrollments should be found.</param>
+        /// <param name="whereAndOrderByClauses">The where and order by clauses for the search</param>
+        /// <param name="modelName">The target object model name</param>
+        /// <returns></returns>
+        private List<Enrollment> FindByModel(GenericModel model, string whereAndOrderByClauses, string modelName)
+        {
+            List<Enrollment> allEnrollments = new List<Enrollment>();
+
+            try
+            {
+                // Disposes and closes automatically the connection when exiting the using statement.
+                using (SqlConnection cnn = new SqlConnection(connectionString))
+                {
+                    // Disposes automatically the command when exiting the using statement.
+                    string cmdText = BuildCompleteSelectAndFromClauses() + whereAndOrderByClauses;
+                    using (SqlCommand cmd = new SqlCommand(cmdText, cnn))
+                    {
+                        AddCommandParameter(cmd, "@ModelID", model.Id);
+                        cnn.Open();
+
+                        // Disposes and closes automatically the data reader when exiting the using statement.
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    allEnrollments.Add(BuildObjectFromReader(reader));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw new DatabaseException(string.Format("An error has occurred when getting all the {0}s for the {1} {2} from the database! Please check if your database is online and set up correctly.", ModelName, modelName, model.Id), ex);
+            }
+
+            return allEnrollments;
         }
     }
 }

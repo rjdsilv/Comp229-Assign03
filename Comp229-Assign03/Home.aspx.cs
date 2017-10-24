@@ -32,16 +32,31 @@ namespace Comp229_Assign03
                 {
                     ShowErrorMessage(ex.Message);
                 }
+                catch (System.Exception ex)
+                {
+                    ShowErrorMessage("The system failed with the following message: " + ex.Message);
+                }
             }
         }
 
         // Saves the students to the database.
         protected void StudentSaveButton_Click(object sender, EventArgs e)
         {
-            studentController.InsertStudent(new Student(0, StudentLastNameTextBox.Text, StudentFirstMidNameTextBox.Text, DateTime.Now));
-            studentController.GetAllStudentsAndBindToRepeater(ref StudentsRepeater);
-            ShowSuccessMessage(studentController.BuildSaveSucessMessage(StudentFirstMidNameTextBox.Text, StudentLastNameTextBox.Text));
-            ClearTextBoxes();
+            try
+            {
+                studentController.InsertStudent(new Student(0, StudentLastNameTextBox.Text, StudentFirstMidNameTextBox.Text, DateTime.Now));
+                studentController.GetAllStudentsAndBindToRepeater(ref StudentsRepeater);
+                ShowSuccessMessage(studentController.BuildSaveSucessMessage(StudentFirstMidNameTextBox.Text, StudentLastNameTextBox.Text));
+                ClearTextBoxes();
+            }
+            catch (DatabaseException ex)
+            {
+                ShowErrorMessage(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("The system failed with the following message: " + ex.Message);
+            }
         }
 
         /// <summary>

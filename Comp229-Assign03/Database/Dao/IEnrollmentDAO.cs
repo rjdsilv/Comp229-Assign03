@@ -17,6 +17,13 @@ namespace Comp229_Assign03.Database.Dao
         List<Enrollment> FindByStudent(Student student);
 
         /// <summary>
+        /// Finds all the enrollments that a given course has.
+        /// </summary>
+        /// <param name="course">The course to have the enrollments found.</param>
+        /// <returns>The list of enrollments for the given course</returns>
+        List<Enrollment> FindByCourse(Course course);
+
+        /// <summary>
         /// Deletes all the enrollments for a given student transactionally.
         /// </summary>
         /// <param name="cnn">The connection to be used.</param>

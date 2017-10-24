@@ -19,7 +19,7 @@ namespace Comp229_Assign03.Database.Dao
         /// </summary>
         protected StudentDAO()
         {
-            modelName = "Student";
+            ModelName = "Student";
         }
 
         ///

@@ -98,6 +98,7 @@ a {
 .table-header-light,
 .table-row,
 .table-row-light,
+.table-row-light-alternate,
 .table-row-alternate {
     height: 45px;
     line-height: 45px;
@@ -117,6 +118,7 @@ a {
     font-weight: bolder;
 }
 
+.table-row-light-alternate,
 .table-row-alternate {
     background-color: rgb(225, 225, 255);
 }
