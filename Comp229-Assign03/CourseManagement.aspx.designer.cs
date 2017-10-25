@@ -128,5 +128,32 @@ namespace Comp229_Assign03 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater StudentsEnrolledRepeater;
+        
+        /// <summary>
+        /// NoEnrollmentsPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel NoEnrollmentsPanel;
+        
+        /// <summary>
+        /// StudentsUnenrolledPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel StudentsUnenrolledPanel;
+        
+        /// <summary>
+        /// StudentsUnenrolledRepeater control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater StudentsUnenrolledRepeater;
     }
 }

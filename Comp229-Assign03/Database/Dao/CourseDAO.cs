@@ -1,6 +1,7 @@
 ﻿using Comp229_Assign03.Database.Model;
+using Comp229_Assign03.Database.Exception;
 using System.Data.SqlClient;
-using System;
+using System.Collections.Generic;
 
 namespace Comp229_Assign03.Database.Dao
 {
@@ -18,6 +19,51 @@ namespace Comp229_Assign03.Database.Dao
         private CourseDAO()
         {
             ModelName = "Course";
+        }
+
+        ///
+        /// <see cref="ICourseDAO" />
+        ///
+        public List<Course> FindAllCoursesNotEnrolledForStudent(Student student)
+        {
+            string whereClause = "where CourseID not in (" +
+                                 "    select CourseID" +
+                                 "    from   Enrollments " +
+                                 "    where  StudentID = @StudentID " +
+                                 ")";
+            List<Course> allCourses = new List<Course>();
+
+            try
+            {
+                // Disposes and closes automatically the connection when exiting the using statement.
+                using (SqlConnection cnn = new SqlConnection(connectionString))
+                {
+                    // Disposes automatically the command when exiting the using statement.
+                    using (SqlCommand cmd = new SqlCommand(BuildCompleteSelectAndFromClauses() + whereClause, cnn))
+                    {
+                        AddCommandParameter(cmd, "@StudentID", student.Id);
+                        cnn.Open();
+
+                        // Disposes and closes automatically the data reader when exiting the using statement.
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    allCourses.Add(BuildObjectFromReader(reader));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw new DatabaseException(string.Format("An error has occurred when getting from the database all the {0}s not enrolled for the student {1}, {2}! Please check if your database is online and set up correctly.", ModelName, student.LastName, student.FirstMidName), ex);
+            }
+
+            return allCourses;
         }
 
         ///
@@ -119,7 +165,7 @@ namespace Comp229_Assign03.Database.Dao
                    ",          de.Budget " +
                    "from       Courses     co " +
                    "inner join Departments de " +
-                   "on         co.DepartmentID = de.DepartmentID";
+                   "on         co.DepartmentID = de.DepartmentID ";
         }
     }
 }

@@ -3,6 +3,7 @@ using Comp229_Assign03.Database.Exception;
 using Comp229_Assign03.Database.Model;
 using System;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Comp229_Assign03
 {
@@ -13,6 +14,7 @@ namespace Comp229_Assign03
         protected Student selectedStudent = new Student();
         protected string message = "";
         protected int enrolledCourses = 0;
+        protected int notEnrolledCourses = 0;
 
 
         // Raised when the page is loaded.
@@ -25,16 +27,26 @@ namespace Comp229_Assign03
                 try
                 {
                     // Shows all the students as none was selected
-                    if (string.IsNullOrEmpty(Request.QueryString["student"]))
+                    if (!string.IsNullOrEmpty(Request.QueryString["student"]))
                     {
-                        studentController.GetAllStudentsAndBindToRepeater(ref StudentsRepeater);
+                        selectedStudent = studentController.FindStudentById(int.Parse(Request.QueryString["student"]));
+                        enrolledCourses = studentController.GetAllEnrollmentsForStudentAndBindToRepeater(selectedStudent, ref StudentEnrolledCoursesRepeater);
+                        notEnrolledCourses = studentController.GetAllNotEnrolledCoursesForStudentAndBindToRepeater(selectedStudent, ref StudentNotEnrolledCoursesRepeater);
+                        ViewState["SelectedStudent"] = selectedStudent;
+
+                        if (!string.IsNullOrEmpty(Request.QueryString["unenrolledCourse"]))
+                        {
+                            ShowSuccessMessage(string.Format("Student {0}, {1} successfully unenrolled from the {2} course.", selectedStudent.LastName, selectedStudent.FirstMidName, Request.QueryString["unenrolledCourse"]));
+                        }
+                        else if (!string.IsNullOrEmpty(Request.QueryString["enrolledCourse"]))
+                        {
+                            ShowSuccessMessage(string.Format("Student {0}, {1} successfully enrolled in the {2} course.", selectedStudent.LastName, selectedStudent.FirstMidName, Request.QueryString["enrolledCourse"]));
+                        }
                     }
                     // Shows the selected student
                     else
                     {
-                        selectedStudent = studentController.FindStudentById(int.Parse(Request.QueryString["student"]));
-                        enrolledCourses = studentController.FindAllEnrollmentsForStudentAndBindToRepeater(selectedStudent, ref StudentEnrolledCoursesRepeater);
-                        ViewState["SelectedStudent"] = selectedStudent;
+                        studentController.GetAllStudentsAndBindToRepeater(ref StudentsRepeater);
                     }
                 }
                 catch (DatabaseException ex)
@@ -74,6 +86,23 @@ namespace Comp229_Assign03
             selectedStudent = ViewState["SelectedStudent"] as Student;
             studentController.DeleteStudentAndDependencies(selectedStudent);
             Response.Redirect(string.Format("~/Home?removedFirstName={0}&removedLastName={1}", selectedStudent.FirstMidName, selectedStudent.LastName));
+        }
+
+        // Unenrolls the student from the given course.
+        protected void RemoveEnrollmentImageButton_Click(object sender, ImageClickEventArgs e)
+        {
+            ImageButton unenrollStudentImageButton = sender as ImageButton;
+            Enrollment enrollment = studentController.FindEnrollmentById(int.Parse(unenrollStudentImageButton.CommandArgument));
+            studentController.DeleteEnrollment(enrollment);
+            Response.Redirect(string.Format("StudentManagement?student={0}&unenrolledCourse={1}", Request.QueryString["student"], enrollment.Course.Title));
+        }
+
+        protected void CourseEnrollmentImageButton_Click(object sender, ImageClickEventArgs e)
+        {
+            ImageButton enrollStudentImageButton = sender as ImageButton;
+            Course course = studentController.FindCourseById(int.Parse(enrollStudentImageButton.CommandArgument));
+            studentController.InsertEnrollment(new Enrollment(0,  course, ViewState["SelectedStudent"] as Student, 0));
+            Response.Redirect(string.Format("StudentManagement?student={0}&enrolledCourse={1}", Request.QueryString["student"], course.Title));
         }
 
         /// <summary>

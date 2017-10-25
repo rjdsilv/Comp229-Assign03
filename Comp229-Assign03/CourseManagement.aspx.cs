@@ -10,6 +10,8 @@ namespace Comp229_Assign03
     public partial class CourseManagement : Page
     {
         // Protect attributes to be used on the page.
+        protected int enrollmentCount = 0;
+        protected int unenrollmentCount = 0;
         protected string message = "";
         protected Course selectedCourse = new Course();
         protected CourseController courseController = CourseController.GetInstance();
@@ -28,11 +30,17 @@ namespace Comp229_Assign03
                     if (!string.IsNullOrEmpty(Request.QueryString["course"]))
                     {
                         selectedCourse = courseController.FindCourseById(int.Parse(Request.QueryString["course"]));
-                        courseController.GetAllEnrollmentsForCourseAndBindToRepeater(selectedCourse, ref StudentsEnrolledRepeater);
+                        enrollmentCount = courseController.GetAllEnrollmentsForCourseAndBindToRepeater(selectedCourse, ref StudentsEnrolledRepeater);
+                        unenrollmentCount = courseController.GetAllNotEnrolledStudentsForCourseAndBindToRepeater(selectedCourse, ref StudentsUnenrolledRepeater);
+                        ViewState["SelectedCourse"] = selectedCourse;
 
                         if (!string.IsNullOrEmpty(Request.QueryString["unenrolledFirstName"]) && !string.IsNullOrEmpty(Request.QueryString["unenrolledLastName"]))
                         {
-                            ShowSuccessMessage(string.Format("Student {0}, {1} successfully unenrolled from the course {2}.", Request.QueryString["unenrolledLastName"], Request.QueryString["unenrolledFirstName"], selectedCourse.Title));
+                            ShowSuccessMessage(string.Format("Student {0}, {1} successfully unenrolled from the {2} course.", Request.QueryString["unenrolledLastName"], Request.QueryString["unenrolledFirstName"], selectedCourse.Title));
+                        }
+                        else if (!string.IsNullOrEmpty(Request.QueryString["enrolledFirstName"]) && !string.IsNullOrEmpty(Request.QueryString["enrolledLastName"]))
+                        {
+                            ShowSuccessMessage(string.Format("Student {0}, {1} successfully enrolled int the {2} course.", Request.QueryString["enrolledLastName"], Request.QueryString["enrolledFirstName"], selectedCourse.Title));
                         }
                     }
                     // Shows the selected course
@@ -70,6 +78,7 @@ namespace Comp229_Assign03
                         )
                     )
                 );
+                courseController.GetAllCoursesAndBindToRepeater(ref CoursesRepeater);
                 ShowSuccessMessage(courseController.BuildSaveSucessMessage(CourseTitleTextBox.Text));
                 ClearTextBoxes();
             }
@@ -90,6 +99,15 @@ namespace Comp229_Assign03
             Enrollment enrollment = courseController.FindEnrollmentById(int.Parse(unenrollStudentImageButton.CommandArgument));
             courseController.DeleteEnrollment(enrollment);
             Response.Redirect(string.Format("CourseManagement?course={0}&unenrolledFirstName={1}&unenrolledLastName={2}", Request.QueryString["course"], enrollment.Student.FirstMidName, enrollment.Student.LastName));
+        }
+
+        // Enrolls the student into the given course.
+        protected void EnrollStudentImageButton_Click(object sender, ImageClickEventArgs e)
+        {
+            ImageButton enrollStudentImageButton = sender as ImageButton;
+            Student student = courseController.FindStudentById(int.Parse(enrollStudentImageButton.CommandArgument));
+            courseController.InsertEnrollment(new Enrollment(0, ViewState["SelectedCourse"] as Course, student, 0));
+            Response.Redirect(string.Format("CourseManagement?course={0}&enrolledFirstName={1}&enrolledLastName={2}", Request.QueryString["course"], student.FirstMidName, student.LastName));
         }
 
         /// <summary>

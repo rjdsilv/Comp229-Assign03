@@ -143,6 +143,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\DeleteIcon.png" />
     <Content Include="Images\HeroImage.png" />
+    <Content Include="Images\InsertIcon.png" />
     <Content Include="Images\UpdateIcon.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

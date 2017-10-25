@@ -61,20 +61,8 @@
             </div>
         </div>
 
-        <div class="hero-image">
-            <div class="black-transparency">
-                <div class="container">
-                    <h1>College.Me</h1><br />
-                    <p>There is only one good, knowledge, and only one evil, ignorance.</p>
-                    <span>Socrates</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="container body-content">
-            <asp:ContentPlaceHolder ID="MainContent" runat="server">
-            </asp:ContentPlaceHolder>
-        </div>
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        </asp:ContentPlaceHolder>
 
         <footer>
             <div class="container">

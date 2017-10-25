@@ -17,6 +17,7 @@ namespace Comp229_Assign03.Controllers
         // Private attributes declaration.
         private ICourseDAO courseDAO = CourseDAO.GetInstance();
         private IEnrollmentDAO enrollmentDAO = EnrollmentDAO.GetInstance();
+        private IStudentDAO studentDAO = StudentDAO.GetInstance();
 
         /// <summary>
         /// Creates a new instance of the CourseController class.
@@ -45,12 +46,31 @@ namespace Comp229_Assign03.Controllers
         }
 
         /// <summary>
+        /// Finds a student by its given id.
+        /// </summary>
+        /// <param name="id">The student identification on the database.</param>
+        /// <returns>The student found</returns>
+        public Student FindStudentById(int id)
+        {
+            return studentDAO.FindById(id);
+        }
+
+        /// <summary>
         /// Inserts the given course on the database.
         /// </summary>
         /// <param name="course">The course to be inserted.</param>
         public void InsertCourse(Course course)
         {
             courseDAO.Insert(course);
+        }
+
+        /// <summary>
+        /// Inserts the given enrollment on the database.
+        /// </summary>
+        /// <param name="enrollment">The course to be inserted.</param>
+        public void InsertEnrollment(Enrollment enrollment)
+        {
+            enrollmentDAO.Insert(enrollment);
         }
 
         /// <summary>
@@ -84,6 +104,21 @@ namespace Comp229_Assign03.Controllers
             repeater.DataBind();
 
             return allEnrollments.Count;
+        }
+
+        /// <summary>
+        /// Finds all the students not enrolled in the given course and binds it to the repeater.
+        /// </summary>
+        /// <param name="course">The reference course</param>
+        /// <param name="repeater">The repeater to be bound</param>
+        /// <returns>The number of enrollments</returns>
+        public int GetAllNotEnrolledStudentsForCourseAndBindToRepeater(Course course, ref Repeater repeater)
+        {
+            List<Student> notEnrolledStudents = studentDAO.FindAllStudentsNotEnrolledInCourse(course);
+            repeater.DataSource = notEnrolledStudents;
+            repeater.DataBind();
+
+            return notEnrolledStudents.Count;
         }
 
         /// <summary>

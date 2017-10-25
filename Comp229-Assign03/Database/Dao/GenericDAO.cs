@@ -67,7 +67,6 @@ namespace Comp229_Assign03.Database.Dao
             }
 
             return allObjects;
-
         }
 
         ///

@@ -11,6 +11,17 @@ namespace Comp229_Assign03.Database.Dao
     /// </summary>
     public interface IStudentDAO : IGenericDAO<Student>
     {
+        /// <summary>
+        /// Deletes an student and all its dependencies.
+        /// </summary>
+        /// <param name="student">The stdent to be deleted</param>
         void DeleteStudentAndDependencies(Student student);
+
+        /// <summary>
+        /// Finds all students that are not enrolled on the given course.
+        /// </summary>
+        /// <param name="course">The course which students are not enrolled.</param>
+        /// <returns>The list of students not enrolled in the given course</returns>
+        List<Student> FindAllStudentsNotEnrolledInCourse(Course course);
     }
 }
