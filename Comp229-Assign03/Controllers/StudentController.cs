@@ -64,6 +64,15 @@ namespace Comp229_Assign03.Controllers
         }
 
         /// <summary>
+        /// Updates the given student on the database.
+        /// </summary>
+        /// <param name="student">The student to be updated.</param>
+        public void UpdateStudent(Student student)
+        {
+            studentDAO.Update(student);
+        }
+
+        /// <summary>
         /// This method will delete the given student and all its dependencies.
         /// </summary>
         /// <param name="student">The student to be deleted.</param>

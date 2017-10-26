@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CourseManagement.aspx.cs" Inherits="Comp229_Assign03.CourseManagement" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+<asp:Content ID="CourseManagementContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container body-content">
         <%-- Error Panel --%>
         <asp:Panel ID="ErrorPanel" runat="server" CssClass="school-error-message-hidden">

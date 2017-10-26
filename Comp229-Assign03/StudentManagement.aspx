@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="StudentManagement.aspx.cs" Inherits="Comp229_Assign03.StudentManagement" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+<asp:Content ID="StudentManagementContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container body-content">
         <%-- Error Panel --%>
         <asp:Panel ID="ErrorPanel" runat="server" CssClass="school-error-message-hidden">
@@ -24,7 +24,7 @@
                         <asp:TextBox ID="StudentLastNameTextBox" TextMode="SingleLine" runat="server" CssClass="school-input" placeholder="Last Name" />
                     </div>
                     <div class="col-sm-2" style="margin-top:16px">
-                        <asp:Button ID="StudentSaveButton" TextMode="SingleLine" runat="server" CssClass="school-submit" Text=" Save Student " OnClick="StudentSaveButton_Click" />
+                        <asp:Button ID="StudentSaveButton" runat="server" CssClass="school-submit" Text=" Save Student " OnClick="StudentSaveButton_Click" />
                     </div>
                     <div class="col-sm-5">
                         <asp:RequiredFieldValidator ID="StudentFirstMidNameTextBox_RequiredFieldValidator" runat="server" ControlToValidate="StudentFirstMidNameTextBox" ErrorMessage="First / Middle name is required." SetFocusOnError="True" Display="Dynamic" CssClass="school-error-message"/>
@@ -207,7 +207,7 @@
                                     <div class="col-sm-3"><span><%# Eval("Department.Name") %></span></div>
                                 </a>
                                 <div class="col-sm-1">
-                                    <%-- Thanks to https://vignette.wikia.nocookie.net --%>
+                                    <%-- Thanks to https://play.google.com --%>
                                     <asp:ImageButton 
                                         ID="CourseEnrollmentImageButton" 
                                         AlternateText="Enroll Course" 
