@@ -10,7 +10,7 @@
 namespace Comp229_Assign03 {
     
     
-    public partial class _Default {
+    public partial class Home {
         
         /// <summary>
         /// ErrorPanel control.

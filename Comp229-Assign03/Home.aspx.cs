@@ -6,7 +6,7 @@ using System.Web.UI;
 
 namespace Comp229_Assign03
 {
-    public partial class _Default : Page
+    public partial class Home : Page
     {
         // Protect attributes to be used on the page.
         protected StudentController studentController = StudentController.GetInstance();
