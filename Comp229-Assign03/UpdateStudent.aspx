@@ -19,7 +19,7 @@
                     <asp:TextBox ID="StudentID" TextMode="SingleLine" ReadOnly="true" Enabled="false" runat="server" CssClass="school-input" placeholder="StudentID"/>
                 </div>
                 <div class="col-sm-6">
-                    <asp:TextBox ID="StudentEnrollmentDateTextBox" TextMode="DateTimeLocal" runat="server" CssClass="school-input" placeholder="Enrollment Date" />
+                    <asp:TextBox ID="StudentEnrollmentDateTextBox" TextMode="Date" runat="server" CssClass="school-input" placeholder="Enrollment Date" />
                 </div>
                 <div class="col-sm-6"></div>
                 <div class="col-sm-6">

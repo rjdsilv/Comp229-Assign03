@@ -15,11 +15,6 @@ footer {
     width: 100%;
 }
 
-input {
-    line-height: 0;
-}
-
-/* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
